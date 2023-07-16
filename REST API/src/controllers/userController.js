@@ -35,7 +35,7 @@ router.post(paths.login, mustBeGuest, async (req, res) => {
         const username = req.body.username?.trim();
         const password = req.body.password?.trim();
         const token = await login(username, password);
-        res.status(200).json(token); m
+        res.status(200).json(token);
     } catch (err) {
         const error = formatErrorMessage(err);
         res.status(400).send({ message: error });
