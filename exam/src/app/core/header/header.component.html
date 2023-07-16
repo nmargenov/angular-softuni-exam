@@ -1,0 +1,22 @@
+<nav>
+    <ul>
+      <li class="logo">
+        <a routerLink="/" (click)="toggleMenu()">MyWebsite</a>
+      </li>
+      <li class="burger" (click)="toggleMenu()">
+        <i class="material-icons">{{ isMenuOpen ? "close" : "menu" }}</i>
+      </li>
+      <li class="menu" [class.is-open]="isMenuOpen">
+        <a routerLink="/" class="menu-item" (click)="toggleMenu()">Home</a>
+        <a routerLink="/feed" class="menu-item" (click)="toggleMenu()">Feed</a>
+        <ng-container *ngIf="!isLoggedIn">
+          <a routerLink="/login" class="menu-item" (click)="toggleMenu()">Login</a>
+          <a routerLink="/register" class="menu-item" (click)="toggleMenu()">Register</a>
+        </ng-container>
+        <ng-container *ngIf="isLoggedIn">
+          <a routerLink="/user/{{user?.username}}" class="menu-item" (click)="toggleMenu()">Profile</a>
+          <a routerLink="/logout" class="menu-item" (click)="toggleMenu()">Logout</a>
+        </ng-container>
+      </li>
+    </ul>
+  </nav>
