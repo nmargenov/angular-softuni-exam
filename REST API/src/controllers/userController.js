@@ -46,7 +46,6 @@ router.get(paths.user, async (req, res) => {
         if (!user) {
             throw new Error("Not Found!");
         }
-        console.log(user);
         res.status(200).json(user);
     } catch (err) {
         const error = formatErrorMessage(err);
