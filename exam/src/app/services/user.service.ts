@@ -17,6 +17,8 @@ export class UserService {
   private paths={
     register:'/users/register',
     login:'/users/login',
+    user:'/users/:username',
+    follow:'/users/follow',
   }
 
   get isLoggedIn(){
@@ -53,6 +55,16 @@ export class UserService {
   login(username:string,password:string):Observable<string>{
     return this.http.post<string>(environment.REST_API+this.paths.login,{username,password}).pipe(catchError(this.errorHandler));
   }
+
+  getUser(username:string):Observable<IUser>{
+    const url = environment.REST_API + this.paths.user.replace(':username', username);
+    return this.http.get<IUser>(url).pipe(catchError(this.errorHandler));
+  }
+
+  follow(userToFollow:string,userId:string):Observable<IUser>{
+    return this.http.post<IUser>(environment.REST_API + this.paths.follow,{userToFollow,userId} ).pipe(catchError(this.errorHandler));
+  }
+
 
   errorHandler(error: HttpErrorResponse) {
     return throwError(error.error.message || 'Unknown error!');

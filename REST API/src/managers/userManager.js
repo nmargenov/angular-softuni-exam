@@ -76,6 +76,36 @@ exports.login = async (username, password) => {
     return token;
 };
 
+exports.getUser = (username) => {
+    return User.findOne({ username }).select('-password');
+};
+
+exports.follow = async (userToFollow, userId) => {
+    const user = await User.findOne({ username: userToFollow });
+    const userToFollowId = user._id;
+
+    isFollowing = false;
+    if (checkIfUserIsFollowing(user, userId)) {
+        isFollowing = true;
+    }
+
+    let result;
+    if (!isFollowing) {
+        result = await Promise.all([
+            User.findByIdAndUpdate(userToFollowId, { $push: { followers: userId } }, { new: true }).select('-password'),
+            User.findByIdAndUpdate(userId, { $push: { following: userToFollowId } }, { new: true }).select('-password')
+        ]);
+    }
+    if (isFollowing) {
+        result = await Promise.all([
+            User.findByIdAndUpdate(userToFollowId, { $pull: { followers: userId } }, { new: true }).select('-password'),
+            User.findByIdAndUpdate(userId, { $pull: { following: userToFollowId } }, { new: true }).select('-password')
+        ]);
+    }
+    return result[0];
+};
+
+
 async function returnToken(updatedUser){
     const payload = {
         _id: updatedUser._id,
@@ -89,9 +119,8 @@ async function returnToken(updatedUser){
     };
     const token = await sign(payload, SECRET, { expiresIn: '1h' });
     return token;
-}
+};
 
-
-exports.getUser = (username) => {
-    return User.findOne({ username }).select('-password');
+function checkIfUserIsFollowing(user, userId) {
+    return user.followers?.map(u => u.toString()).includes(userId);
 };

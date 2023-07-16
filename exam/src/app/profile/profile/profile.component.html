@@ -1,0 +1,53 @@
+<app-not-found *ngIf="!isLoading && hasError"/>
+<main>
+    <app-page-spinner *ngIf="isLoading"/>
+  <ng-container *ngIf="!isLoading &&!hasError">
+    <div class="profile">
+      <div class="profile-image">
+        <app-spinner *ngIf="isImageLoading"/>
+        <img [class.is-loading]="isImageLoading"
+        (error)="onImageLoad()" (load)="onImageLoad()"
+          [src]="decodeBuffer(user.profilePicture.data)"
+          alt=""
+        />
+      </div>
+
+      <div class="profile-info">
+        <div class="profile-username">
+          <h1>{{ user.username }}</h1>
+          <ng-container *ngIf="isOwner">
+            <button routerLink="/account/settings" class="edit-btn">Edit Profile</button>
+            <i routerLink="/account/settings" class="material-icons settings">settings</i>
+          </ng-container>
+          <ng-container *ngIf="!isOwner && isLoggedIn">
+            <button [disabled]="isFollowingLoading" (click)="onFollow()" *ngIf="isFollowing" class="follow-btn">Unfollow</button>
+            <button [disabled]="isFollowingLoading" (click)="onFollow()" *ngIf="!isFollowing" class="follow-btn">Follow</button>
+          </ng-container>
+        </div>
+        <div class="profile-stats">
+          <ul>
+            <li><span class="profile-stat-count">2</span> posts</li>
+            <li>
+              <span class="profile-stat-count">{{
+                user.followers.length
+              }}</span>
+              followers
+            </li>
+            <li>
+              <span class="profile-stat-count">{{
+                user.following.length
+              }}</span>
+              following
+            </li>
+          </ul>
+        </div>
+        <div class="profile-name">
+          <p>{{user.firstName}} {{user.lastName}}</p>
+        </div>
+        <div class="profile-bio">
+          <p>{{user.bio || "No bio yet."}}</p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</main>

@@ -1,5 +1,5 @@
-const { login, register, getUser } = require('../managers/userManager');
-const { mustBeGuest } = require('../middlewares/authMiddlewares');
+const { login, register, getUser, follow } = require('../managers/userManager');
+const { mustBeGuest, mustBeAuth } = require('../middlewares/authMiddlewares');
 const { formatErrorMessage } = require('../utils/errorHandler');
 
 const router = require('express').Router();
@@ -8,6 +8,7 @@ const paths = {
     register: '/register',
     login: '/login',
     user: '/:username',
+    follow: '/follow',
 }
 
 router.post(paths.register, mustBeGuest, async (req, res) => {
@@ -52,5 +53,18 @@ router.get(paths.user, async (req, res) => {
         res.status(404).send({ message: error });
     }
 });
+
+router.post(paths.follow, mustBeAuth, async (req, res) => {
+    try {
+        const userToFollow = req.body.userToFollow;
+        const userId = req.body.userId;
+        const user = await follow(userToFollow, userId);
+        res.status(200).json(user);
+    } catch (err) {
+        const error = formatErrorMessage(err);
+        res.status(400).send({ message: error });
+    }
+});
+
 
 module.exports = router;

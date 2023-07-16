@@ -8,11 +8,13 @@ import { LoginComponent } from './auth/login/login.component';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { ProfileComponent } from './profile/profile/profile.component';
 
 const routes: Routes = [
   {path:'login',component:LoginComponent,canActivate:[mustBeLoggedOut]},
   {path:'register',component:RegisterComponent,canActivate:[mustBeLoggedOut]},
   {path:'logout',component:LogoutComponent,canActivate:[mustBeLoggedIn]},
+  {path:'user/:username',component:ProfileComponent},
   {path:'**',component:NotFoundComponent},
 ];
 
