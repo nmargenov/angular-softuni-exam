@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -8,14 +9,15 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
 
+  constructor(private userService: UserService) {}
+
   get isLoggedIn() {
-    return false;
+    return this.userService.isLoggedIn;
   }
 
   get user(){
-    return {username:'nmargenov'};
+    return this.userService.decodedToken;
   } 
-  
   isMenuOpen = false;
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;

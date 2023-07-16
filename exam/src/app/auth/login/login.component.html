@@ -1,0 +1,68 @@
+<app-page-spinner *ngIf="isLoading"/>
+<main *ngIf="!isLoading">
+  <div class="container">
+    <h1>Login</h1>
+    <div *ngIf="errorMsg" class="errorDiv">
+      <span class="errorMsg">{{ errorMsg }}</span>
+    </div>
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+      <input
+        ngModel
+        #username="ngModel"
+        autocapitalize="off"
+        type="text"
+        name="username"
+        placeholder="Username"
+        required
+        minlength="3"
+        maxlength="20"
+        [class.invalidField]="username.invalid && username.touched"
+      />
+      <div
+        class="errorDiv"
+        *ngIf="username.errors && username.invalid && username.touched"
+      >
+        <small class="errorMsg" *ngIf="username.errors?.['required']"
+          >*Username is required!</small
+        >
+        <small class="errorMsg" *ngIf="username.errors?.['minlength']"
+          >*Username must be at least 3 characters!</small
+        >
+        <small class="errorMsg" *ngIf="username.errors?.['maxlength']"
+          >*Username must not exceed 20 characters!</small
+        >
+      </div>
+      <input
+        ngModel
+        #password="ngModel"
+        autocapitalize="off"
+        type="password"
+        name="password"
+        placeholder="Password"
+        required
+        minlength="6"
+        [class.invalidField]="password.invalid && password.touched"
+      />
+      <div
+        class="errorDiv"
+        *ngIf="password.errors && password.invalid && password.touched"
+      >
+        <small class="errorMsg" *ngIf="password.errors?.['required']"
+          >*Password is required!</small
+        >
+        <small class="errorMsg" *ngIf="password.errors?.['minlength']"
+          >*Password must be at least 6 characters!</small
+        >
+        <small class="errorMsg" *ngIf="password.errors?.['maxlength']"
+          >*Password must not exceed 20 characters!</small
+        >
+      </div>
+      <input
+        [disabled]="loginForm.invalid"
+        type="submit"
+        class="submit-button"
+        value="Login"
+      />
+    </form>
+  </div>
+</main>
