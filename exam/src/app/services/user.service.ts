@@ -21,6 +21,7 @@ export class UserService {
     follow:'/users/follow',
     publicData:'/users/publicData/:userId',
     removeExistingImage:'/users/image/:userId',
+    privateData:'/users/privateData/:userId',
   }
 
   get isLoggedIn(){
@@ -77,6 +78,11 @@ export class UserService {
     return this.http.delete<string>(url).pipe(catchError(this.errorHandler));
   }
   
+  editPrivateData(email:string,birthdate:string,userId:string):Observable<string>{
+    const url = environment.REST_API + this.paths.privateData.replace(':userId', userId);
+    return this.http.patch<string>(url,{email,birthdate}).pipe(catchError(this.errorHandler));
+  }
+
   errorHandler(error: HttpErrorResponse) {
     return throwError(error.error.message || 'Unknown error!');
   }

@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="single-info">
+      <div class="title">
+        <h2>Private info</h2>
+      </div>
+      <div class="info">
+        <div class="single">
+          <div *ngIf="privateErrorMsg" class="errorDiv">
+            <p class="errorMsg first">{{ privateErrorMsg }}</p>
+          </div>
+          <div class="field">
+            <p>Email</p>
+            <input type="text" [ngModel]="user.email" #email="ngModel" autocapitalize="off" required email
+              placeholder="Email" [disabled]="isPrivateUpdateLoading" (keyup.enter)="onPrivateSave()"
+              [class.invalidField]="email.invalid && email.touched" />
+          </div>
+          <div class="errorDiv" *ngIf="email.errors && email.invalid && email.touched">
+            <small class="errorMsg" *ngIf="email.errors?.['required']">*Email is required!</small>
+            <small class="errorMsg" *ngIf="email.errors?.['minlength']">*Email must be at least 3 characters!</small>
+            <small class="errorMsg" *ngIf="email.errors?.['email'] && !email.errors?.['minlength']">*Email is
+              invalid!</small>
+            <small class="errorMsg" *ngIf="email.errors?.['maxlength']">*Email must not exceed 50 characters!</small>
+          </div>
+          <div class="field">
+            <p>Birthdate</p>
+            <input type="date" [ngModel]="user.birthdate" #birthdate="ngModel" required
+              [disabled]="isPrivateUpdateLoading" (keyup.enter)="onPrivateSave()" [class.invalidField]="
+                !birthdateValidator(birthdate) && birthdate.touched
+              " />
+          </div>
+          <div class="errorDiv" *ngIf="birthdate.errors && birthdate.invalid && birthdate.touched">
+            <small class="errorMsg" *ngIf="birthdate.errors?.['required']">*Birthdate is required!</small>
+          </div>
+          <div class="errorDiv"
+            *ngIf="birthdate.touched && !birthdateValidator(birthdate) && !birthdate.errors?.['required']">
+            <small class="errorMsg">*Birthdate must be between year 1900 and 2023!</small>
+          </div>
+        </div>
+      </div>
+      <div class="button-div">
+        <button *ngIf="!isPrivateUpdateLoading" [disabled]="email.invalid || !birthdateValidator(birthdate)"
+          (click)="onPrivateSave()" class="save">
+          Save changes
+        </button>
+        <app-spinner *ngIf="isPrivateUpdateLoading" />
+      </div>
+    </div>
+  </div>

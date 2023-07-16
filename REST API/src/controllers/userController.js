@@ -1,4 +1,4 @@
-const { login, register, getUser, follow, removeExistingImage, editPublicProfileData } = require('../managers/userManager');
+const { login, register, getUser, follow, removeExistingImage, editPublicProfileData, editPrivateProfileData } = require('../managers/userManager');
 const { mustBeGuest, mustBeAuth } = require('../middlewares/authMiddlewares');
 const { formatErrorMessage } = require('../utils/errorHandler');
 
@@ -11,6 +11,7 @@ const paths = {
     follow: '/follow',
     publicData: '/publicData/:userId',
     removeExistingImage: '/image/:userId',
+    privateData: '/privateData/:userId',
 }
 
 router.post(paths.register, mustBeGuest, async (req, res) => {
@@ -96,6 +97,23 @@ router.delete(paths.removeExistingImage,mustBeAuth,async(req,res)=>{
     }catch(err){
         const error = formatErrorMessage(err);
         res.status(400).send({message:error})
+    }
+});
+
+router.patch(paths.privateData,mustBeAuth,async(req,res)=>{
+    try{
+        const userId = req.params.userId;
+        const loggedInUser = req.user._id;
+        if(userId!=loggedInUser){
+            throw new Error("Unautorized!");
+        }
+        const email = req.body.email?.trim();
+        const birthdate = req.body.birthdate?.trim();
+        const token = await editPrivateProfileData(email,birthdate,userId);
+        res.status(200).json(token);
+    }catch(err){
+        const error = formatErrorMessage(err);
+        res.status(400).send({ message: error});
     }
 });
 

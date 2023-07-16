@@ -158,6 +158,20 @@ exports.removeExistingImage = async (userId) => {
     return token;
 };
 
+exports.editPrivateProfileData = async (email, birthdate, userId) => {
+    const year = birthdate?.split('-')[0];
+    const isValidBirthdate = Number(year) >= 1900 && Number(year) <= 2023;
+
+    if (!isValidBirthdate) {
+        throw new Error('Birthdate must be between year 1900 and 2023!');
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, { email, birthdate }, { runValidators: true, new: true }).select('-password');
+
+    const token = returnToken(updatedUser);
+    return token;
+};
+
 async function returnToken(updatedUser){
     const payload = {
         _id: updatedUser._id,

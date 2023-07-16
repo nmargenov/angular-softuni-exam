@@ -5,13 +5,15 @@ import { PublicInfoComponent } from './public-info/public-info.component';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PrivateInfoComponent } from './private-info/private-info.component';
 
 
 
 @NgModule({
   declarations: [
     SettingsComponent,
-    PublicInfoComponent
+    PublicInfoComponent,
+    PrivateInfoComponent
   ],
   imports: [
     CommonModule,
