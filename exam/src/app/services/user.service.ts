@@ -22,6 +22,7 @@ export class UserService {
     publicData:'/users/publicData/:userId',
     removeExistingImage:'/users/image/:userId',
     privateData:'/users/privateData/:userId',
+    password:'/users/password/:userId',
   }
 
   get isLoggedIn(){
@@ -81,6 +82,11 @@ export class UserService {
   editPrivateData(email:string,birthdate:string,userId:string):Observable<string>{
     const url = environment.REST_API + this.paths.privateData.replace(':userId', userId);
     return this.http.patch<string>(url,{email,birthdate}).pipe(catchError(this.errorHandler));
+  }
+
+  editPassword(oldPassword:string,newPassword:string,newRePassword:string,userId:string):Observable<string>{
+    const url = environment.REST_API + this.paths.password.replace(':userId', userId);
+    return this.http.patch<string>(url,{oldPassword,newPassword,newRePassword}).pipe(catchError(this.errorHandler));
   }
 
   errorHandler(error: HttpErrorResponse) {

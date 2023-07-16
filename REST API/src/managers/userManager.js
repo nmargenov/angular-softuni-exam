@@ -172,6 +172,48 @@ exports.editPrivateProfileData = async (email, birthdate, userId) => {
     return token;
 };
 
+exports.editPrivateProfileData = async (email, birthdate, userId) => {
+    const year = birthdate?.split('-')[0];
+    const isValidBirthdate = Number(year) >= 1900 && Number(year) <= 2023;
+
+    if (!isValidBirthdate) {
+        throw new Error('Birthdate must be between year 1900 and 2023!');
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, { email, birthdate }, { runValidators: true, new: true }).select('-password');
+
+    const token = returnToken(updatedUser);
+    return token;
+};
+
+exports.editPassword = async (oldPassword, newPassword, newRepassword, userId) => {
+    if (!newPassword) {
+        throw new Error("New password is required!");
+    }
+
+    if (newPassword !== newRepassword) {
+        throw new Error("New passwords do not match!");
+    }
+
+    if (newPassword?.length < 6 || newPassword?.length > 20) {
+        throw new Error("Password must be at between 6 and 20 characters long!");
+    }
+    const user = await User.findById(userId);
+
+    const isValid = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isValid) {
+        throw new Error("Old password do not match!");
+    }
+
+    const newHashedPassword = await bcrypt.hash(newPassword, 10);
+
+    const updatedUser = await User.findByIdAndUpdate(userId, { password: newHashedPassword });
+
+    const token = returnToken(updatedUser);
+    return token;
+};
+
 async function returnToken(updatedUser){
     const payload = {
         _id: updatedUser._id,

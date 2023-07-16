@@ -6,6 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PrivateInfoComponent } from './private-info/private-info.component';
+import { PasswordComponent } from './password/password.component';
 
 
 
@@ -13,7 +14,8 @@ import { PrivateInfoComponent } from './private-info/private-info.component';
   declarations: [
     SettingsComponent,
     PublicInfoComponent,
-    PrivateInfoComponent
+    PrivateInfoComponent,
+    PasswordComponent
   ],
   imports: [
     CommonModule,
