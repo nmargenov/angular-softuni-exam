@@ -9,12 +9,14 @@ import { LogoutComponent } from './auth/logout/logout.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { ProfileComponent } from './profile/profile/profile.component';
+import { SettingsComponent } from './settings/settings/settings.component';
 
 const routes: Routes = [
   {path:'login',component:LoginComponent,canActivate:[mustBeLoggedOut]},
   {path:'register',component:RegisterComponent,canActivate:[mustBeLoggedOut]},
   {path:'logout',component:LogoutComponent,canActivate:[mustBeLoggedIn]},
   {path:'user/:username',component:ProfileComponent},
+  {path:'account/settings',component:SettingsComponent,canActivate:[mustBeLoggedIn]},
   {path:'**',component:NotFoundComponent},
 ];
 

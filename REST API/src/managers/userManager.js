@@ -1,8 +1,10 @@
 const User = require("../models/User");
+const fs = require('fs');
 
 const bcrypt = require('bcrypt');
 const { sign } = require("../utils/jwt");
 const { SECRET } = require("../config/config");
+const { editPublicProfileData } = require("./pictureManager");
 
 
 
@@ -105,6 +107,56 @@ exports.follow = async (userToFollow, userId) => {
     return result[0];
 };
 
+exports.editPublicProfileData = async (req, res, userId) => {
+    const { image, bio, firstName, lastName, username } = await editPublicProfileData(req, res);
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername && existingUsername._id != userId) {
+        throw new Error("Username is already in use!");
+    }
+    const user = await User.findById(userId);
+    const newData = {};
+    if (image) {
+        newData.profilePicture = {
+            data: image,
+            contentType: 'image/png'
+        }
+        if(user.profilePicture){
+            const oldPicturePath = user.profilePicture.data.toString().replace(/\\/g, '/');
+            if (oldPicturePath !== 'src/profilePictures/defaultUser.png') {
+                fs.unlinkSync(user.profilePicture.data.toString());
+            }
+        }
+    }
+    if (!bio) {
+        newData.bio = "";
+    } else {
+        newData.bio = bio
+    }
+    newData.username = username;
+    newData.firstName = firstName;
+    newData.lastName = lastName;
+
+    const updatedUser = await User.findByIdAndUpdate(userId, newData, { runValidators: true, new: true }).select('-password');
+    
+    const token = returnToken(updatedUser);
+    return token;
+};
+
+exports.removeExistingImage = async (userId) => {
+    const user = await User.findById(userId);
+    const oldPicturePath = user.profilePicture.data.toString().replace(/\\/g, '/');
+    if (oldPicturePath !== 'src/profilePictures/defaultUser.png' && fs.existsSync(user.profilePicture.data.toString())) {
+        fs.unlinkSync(user.profilePicture.data.toString());
+    }
+    const updatedUser = await User.findByIdAndUpdate(userId, {
+        profilePicture: {
+            data: `src/profilePictures/defaultUser.png`,
+            contentType: 'image/png'
+        }
+    },{runValidators:true,new:true});
+    const token = returnToken(updatedUser);
+    return token;
+};
 
 async function returnToken(updatedUser){
     const payload = {

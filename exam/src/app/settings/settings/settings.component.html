@@ -1,0 +1,7 @@
+<app-page-spinner *ngIf="isLoading" />
+<app-not-found *ngIf="!isLoading && hasError" />
+<main *ngIf="!isLoading && !hasError">
+
+  <app-public-info [user]="user" />
+
+</main>

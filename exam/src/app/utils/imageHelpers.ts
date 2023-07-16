@@ -6,3 +6,8 @@ export function decodeBuffer(data: { data: [] }) {
   const img = decoder.decode(uint);
   return environment.REST_API + '/' + img;
 }
+
+export function isFileAnImage(file: File): boolean {
+  const imageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  return file && imageTypes.includes(file.type);
+}

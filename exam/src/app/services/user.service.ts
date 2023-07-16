@@ -19,6 +19,8 @@ export class UserService {
     login:'/users/login',
     user:'/users/:username',
     follow:'/users/follow',
+    publicData:'/users/publicData/:userId',
+    removeExistingImage:'/users/image/:userId',
   }
 
   get isLoggedIn(){
@@ -65,7 +67,16 @@ export class UserService {
     return this.http.post<IUser>(environment.REST_API + this.paths.follow,{userToFollow,userId} ).pipe(catchError(this.errorHandler));
   }
 
+  editPublicData(userId:string,formData:FormData):Observable<string>{
+    const url = environment.REST_API + this.paths.publicData.replace(':userId', userId);
+    return this.http.patch<string>(url,formData).pipe(catchError(this.errorHandler));
+  }
 
+  removeExistingImage(userId:string):Observable<string>{
+    const url = environment.REST_API + this.paths.removeExistingImage.replace(':userId', userId);
+    return this.http.delete<string>(url).pipe(catchError(this.errorHandler));
+  }
+  
   errorHandler(error: HttpErrorResponse) {
     return throwError(error.error.message || 'Unknown error!');
   }

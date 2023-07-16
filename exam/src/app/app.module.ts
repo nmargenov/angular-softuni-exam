@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
+import { SettingsModule } from './settings/settings.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ProfileModule } from './profile/profile.module';
     HttpClientModule,
     CoreModule,
     AuthModule,
-    ProfileModule
+    ProfileModule,
+    SettingsModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS,
