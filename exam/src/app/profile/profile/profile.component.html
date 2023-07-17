@@ -1,15 +1,12 @@
-<app-not-found *ngIf="!isLoading && hasError"/>
+<app-not-found *ngIf="!isLoading && hasError" />
 <main>
-    <app-page-spinner *ngIf="isLoading"/>
+  <app-page-spinner *ngIf="isLoading" />
   <ng-container *ngIf="!isLoading &&!hasError">
     <div class="profile">
       <div class="profile-image">
-        <app-spinner *ngIf="isImageLoading"/>
-        <img [class.is-loading]="isImageLoading"
-        (error)="onImageLoad()" (load)="onImageLoad()"
-          [src]="decodeBuffer(user.profilePicture.data)"
-          alt=""
-        />
+        <app-spinner *ngIf="isImageLoading" />
+        <img [class.is-loading]="isImageLoading" (error)="onImageLoad()" (load)="onImageLoad()"
+          [src]="decodeBuffer(user.profilePicture.data)" alt="" />
       </div>
 
       <div class="profile-info">
@@ -20,24 +17,20 @@
             <i routerLink="/account/settings" class="material-icons settings">settings</i>
           </ng-container>
           <ng-container *ngIf="!isOwner && isLoggedIn">
-            <button [disabled]="isFollowingLoading" (click)="onFollow()" *ngIf="isFollowing" class="follow-btn">Unfollow</button>
-            <button [disabled]="isFollowingLoading" (click)="onFollow()" *ngIf="!isFollowing" class="follow-btn">Follow</button>
+            <button [disabled]="isFollowingLoading" (click)="onFollow()" *ngIf="isFollowing"
+              class="follow-btn">Unfollow</button>
+            <button [disabled]="isFollowingLoading" (click)="onFollow()" *ngIf="!isFollowing"
+              class="follow-btn">Follow</button>
           </ng-container>
         </div>
         <div class="profile-stats">
           <ul>
-            <li><span class="profile-stat-count">2</span> posts</li>
+            <li><span class="profile-stat-count">{{user.userPosts?.length || 0}} posts</span></li>
             <li>
-              <span class="profile-stat-count">{{
-                user.followers.length
-              }}</span>
-              followers
+              <span class="profile-stat-count">{{user.followers.length}} followers</span>
             </li>
             <li>
-              <span class="profile-stat-count">{{
-                user.following.length
-              }}</span>
-              following
+              <span class="profile-stat-count">{{user.following.length}} following</span>
             </li>
           </ul>
         </div>

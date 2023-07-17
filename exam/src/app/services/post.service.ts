@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError } from 'rxjs';
+import { Observable, catchError, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 
 import { IPost } from '../types/IPost';
@@ -13,9 +13,14 @@ export class PostService {
 
   constructor(private http: HttpClient) {}
 
+  postUpdated = new EventEmitter<IPost>();
+
+
   private paths = {
     posts:'/posts',
-    followingPosts:'/posts/following'
+    followingPosts:'/posts/following',
+    post:'/posts/:postId',
+    like:'/posts/like/:postId'
   }
 
   createPost(formData: FormData): Observable<IPost> {
@@ -34,4 +39,25 @@ export class PostService {
     return this.http.get<IPost[]>(environment.REST_API+this.paths.followingPosts).pipe(catchError(errorHandler));
   }
 
+  getPostById(postId: string): Observable<IPost> {
+    const url = environment.REST_API+ this.paths.post.replace(':postId',postId);
+    return this.http.get<IPost>(url).pipe(
+      tap((createdPost: IPost) => {
+        this.postUpdated.emit(createdPost);
+      }),
+      catchError(errorHandler)
+    );
+  }
+
+  likePost(postId: string, userId: string): Observable<IPost> {
+    const url = environment.REST_API+ this.paths.like.replace(':postId',postId);
+    return this.http
+      .post<IPost>(url, { userId })
+      .pipe(
+        tap((updatedPost: IPost) => {
+          this.postUpdated.emit(updatedPost);
+        }),
+        catchError(errorHandler)
+      );
+  }
 }

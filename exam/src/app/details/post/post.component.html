@@ -1,0 +1,48 @@
+<div *ngIf="post" class="container">
+    <div class="profile-image-div">
+        <app-spinner *ngIf="isProfileImageLoading" />
+        <img [class.is-loading]="isProfileImageLoading" (load)="onProfileImageLoad()" (error)="onProfileImageLoad()"
+            class="profile-image" [src]="decodeBuffer(post!.owner.profilePicture.data)"
+            (click)="navigateToUserProfile(post.owner.username)">
+    </div>
+    <div class="main">
+        <div class="header">
+            <div (click)="navigateToUserProfile(post.owner.username)" class="owner-name">
+                <p>{{post.owner.firstName}} {{post.owner.lastName}}</p>
+            </div>
+            <div class="username-publish">
+                <div (click)="navigateToUserProfile(post.owner.username)" class="owner-username">
+                    <p>@{{post.owner.username}}</p>
+                </div>
+                <div class="publish-time">
+                    <p>{{timeAgo(post.createdAt)}}</p>
+                </div>
+            </div>
+            <div *ngIf="isEdited(post!.createdAt,post!.lastEditedAt)" class="edited">
+                <p>Edited</p>
+                <i class="material-icons">edit</i>
+            </div>
+        </div>
+        <div class="content">
+            <p>{{post.description}}</p>
+            <div *ngIf="post.image" class="post-image">
+                <app-spinner *ngIf="isLoadingImage" />
+                <img [class.is-loading]="isLoadingImage" class="post-image" (error)="onImageLoad()"
+                    (load)="onImageLoad()" [src]="decodeBuffer(post.image.data)">
+            </div>
+        </div>
+        <div class="footer">
+            <div *ngIf="isLoggedIn" class="like">
+                <i *ngIf="!isLiking" [class.isLiked]="isLiked" (click)="onLike()"
+                    class="material-icons main">favorite</i>
+                <i *ngIf="isLiking" class="material-icons liking">favorite</i>
+            </div>
+            <div class="likes">
+                <p>{{post.likedBy.length}} likes</p>
+            </div>
+            <div class="comments">
+                <p>{{post.comments.length}} comments</p>
+            </div>
+        </div>
+    </div>
+</div>

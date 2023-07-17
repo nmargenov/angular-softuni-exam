@@ -10,7 +10,7 @@
         <button *ngIf="!isLoading" class="clear-btn" (click)="onFileClear()">Clear image</button>
     </div>
     <div class="post-actions" *ngIf="!isLoading">
-            <input type="file" #fileInput (change)="onFileSelect($event)">
+            <input type="file" accept="image/*" #fileInput (change)="onFileSelect($event)">
             <button class="upload-btn" for="file-input" (click)="fileInput.click()">{{previewUrl?"Change Image" :"Upload Image"}}</button>
             <button class="post-btn" (click)="onPost()">Post</button>
     </div>

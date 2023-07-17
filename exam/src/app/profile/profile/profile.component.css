@@ -41,6 +41,7 @@ img {
 
 .profile-info {
   padding: 40px;
+  width: 100%;
   max-width: 300px;
 }
 
@@ -125,7 +126,8 @@ h1 {
     height: 100px;
   }
   .profile-info {
-    max-width: 180px;
+    width: 100%;
+    max-width: 250px;
     padding: 20px;
   }
 

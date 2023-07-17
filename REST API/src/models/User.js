@@ -63,6 +63,13 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+userSchema.virtual('userPosts', {
+    ref: 'Post',
+    localField: '_id',
+    foreignField: 'owner',
+  });
+  
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

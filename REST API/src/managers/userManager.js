@@ -78,8 +78,12 @@ exports.login = async (username, password) => {
     return token;
 };
 
-exports.getUser = (username) => {
-    return User.findOne({ username }).select('-password');
+exports.getUser = async (username) => {
+    const user = await User.findOne({ username }).select('-password').populate('userPosts');
+    const userObject = user.toObject();
+    userObject.userPosts = user.userPosts;
+    userObject.profilePicture = user.profilePicture;
+    return userObject;
 };
 
 exports.follow = async (userToFollow, userId) => {

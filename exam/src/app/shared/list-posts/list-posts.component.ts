@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { IPost } from 'src/app/types/IPost';
 import { decodeBuffer } from 'src/app/utils/imageHelpers';
+import { isEdited, timeAgo } from 'src/app/utils/postHelper';
 
 @Component({
   selector: 'app-list-posts',
@@ -37,31 +38,11 @@ export class ListPostsComponent {
   }
 
 
-  timeAgo(date: string): string {
-    const now = new Date();
-    const timestamp = new Date(date);
-    const diff = Math.abs(now.getTime() - timestamp.getTime());
-    const minutes = Math.floor(diff / (1000 * 60));
-  
-    if (minutes < 1) {
-      return 'Just now';
-    } else if (minutes < 60) {
-      return `${minutes} minutes ago`;
-    } else if (minutes < 1440) {
-      const hours = Math.floor(minutes / 60);
-      return `${hours} hours ago`;
-    } else {
-      const days = Math.floor(minutes / 1440);
-      return `${days} days ago`;
-    }
-  }
-  
-  isEdited(createdAt:string,lastEditedAt:string):boolean{
-    const createdDate = new Date(createdAt);
-    const editedDate = new Date(lastEditedAt);
-  
-  
-    return createdDate.getTime() !== editedDate.getTime();
+  isEdited(createdAt: string, lastEditedAt: string){
+    return isEdited(createdAt,lastEditedAt);
   }
 
+  timeAgo(date:string){
+    return timeAgo(date);
+  }
 }

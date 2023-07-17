@@ -1,5 +1,5 @@
 <main>
-    <app-create-post />
+    <app-create-post *ngIf="isLoggedIn" />
     <app-state (feedChange)="onFeedChange($event)" />
     <app-spinner *ngIf="isLoading"/>
     <app-list-posts *ngIf="!isLoading && !hasError" [posts]="posts" />

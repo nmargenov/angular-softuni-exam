@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from 'src/app/services/post.service';
+import { UserService } from 'src/app/services/user.service';
 import { IPost } from 'src/app/types/IPost';
 
 @Component({
@@ -9,7 +10,11 @@ import { IPost } from 'src/app/types/IPost';
 })
 export class FeedComponent implements OnInit{
 
-  constructor(private postService:PostService){}
+  constructor(private postService:PostService,private userService:UserService){}
+
+  get isLoggedIn(){
+    return this.userService.isLoggedIn;
+  }
 
   posts:IPost[]|null=null;
   isLoading = false;

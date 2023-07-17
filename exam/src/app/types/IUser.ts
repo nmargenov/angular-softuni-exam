@@ -1,3 +1,5 @@
+import { IPost } from "./IPost";
+
 export interface IUser {
     _id: string;
     username: string;
@@ -12,5 +14,6 @@ export interface IUser {
     };
     following:string[];
     followers:string[];
+    userPosts:IPost[]|null;
   }
   

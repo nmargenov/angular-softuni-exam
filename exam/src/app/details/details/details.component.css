@@ -1,0 +1,13 @@
+main{
+    display: flex;
+    justify-content: center;
+}
+
+app-post{
+    width: 100%;
+    max-width: 740px;
+}
+
+app-not-found{
+    width: 100%;
+}

@@ -1,13 +1,15 @@
 const { postWithImage } = require('../managers/pictureManager');
-const { createPost, getAllPosts } = require('../managers/postManager');
+const { createPost, getAllPosts, getPostById, likePost } = require('../managers/postManager');
 const { mustBeAuth } = require('../middlewares/authMiddlewares');
 const { formatErrorMessage } = require('../utils/errorHandler');
 
 const router = require('express').Router();
 
 const paths = {
+    post:'/:postId',
     posts: '/',
-    followingPost:'/following'
+    followingPost:'/following',
+    like: '/like/:postId',
 }
 
 router.get(paths.posts, async (req, res) => {
@@ -45,6 +47,30 @@ router.post(paths.posts, mustBeAuth, async (req, res) => {
         res.status(404).send({ message: error });
     }
 });
+
+router.get(paths.post, async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        const post = await getPostById(postId);
+        res.status(200).json(post);
+    } catch (err) {
+        const error = formatErrorMessage(err);
+        res.status(404).send({ message: error });
+    }
+});
+
+
+router.post(paths.like, mustBeAuth, async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        const userId = req.body.userId;
+        const post = await likePost(postId, userId);
+        res.status(200).json(post);
+    } catch (err) {
+        res.status(404).send({ message: err.message });
+    }
+});
+
 
 
 module.exports = router;

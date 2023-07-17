@@ -13,7 +13,7 @@ exports.getAllPosts = async (userId) => {
         const filteredPosts = posts.filter(p=>user.following.includes(p.owner._id));
         return filteredPosts;
     }
-}
+};
 
 exports.createPost = (description, owner, image) => {
     const post = {
@@ -26,6 +26,37 @@ exports.createPost = (description, owner, image) => {
             contentType: 'image/png'
         }
     }
-
     return Post.create(post);
-}
+};
+
+exports.getPostById = (postId) => {
+    return Post.findById(postId).populate({
+        path: 'owner',
+        select: '-password'
+    }).populate({
+        path: 'comments',
+        populate: {
+            path: 'owner',
+            select: '-password'
+        }
+    });
+};
+
+
+exports.likePost = async (postId, userId) => {
+    const post = await Post.findById(postId);
+
+    if (checkIfLiked(post, userId)) {
+        return Post.findByIdAndUpdate(postId, { $pull: { likedBy: userId } }, { runValidators: true, new: true })
+            .populate({ path: 'owner', select: '-password' })
+            .populate({ path: 'comments', populate: { path: 'owner', select: '-password' } });
+    } else {
+        return Post.findByIdAndUpdate(postId, { $push: { likedBy: userId } }, { new: true })
+            .populate({ path: 'owner', select: '-password' })
+            .populate({ path: 'comments', populate: { path: 'owner', select: '-password' } });
+    }
+};
+
+function checkIfLiked(post, userId) {
+    return post.likedBy.map(p => p.toString()).includes(userId);
+};

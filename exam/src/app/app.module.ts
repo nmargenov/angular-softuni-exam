@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { SettingsModule } from './settings/settings.module';
 import { FeedModule } from './feed/feed.module';
+import { DetailsModule } from './details/details.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { FeedModule } from './feed/feed.module';
     AuthModule,
     ProfileModule,
     SettingsModule,
-    FeedModule
+    FeedModule,
+    DetailsModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS,

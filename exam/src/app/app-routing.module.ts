@@ -11,6 +11,7 @@ import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { ProfileComponent } from './profile/profile/profile.component';
 import { SettingsComponent } from './settings/settings/settings.component';
 import { FeedComponent } from './feed/feed/feed.component';
+import { DetailsComponent } from './details/details/details.component';
 
 const routes: Routes = [
   {path:'login',component:LoginComponent,canActivate:[mustBeLoggedOut]},
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path:'user/:username',component:ProfileComponent},
   {path:'account/settings',component:SettingsComponent,canActivate:[mustBeLoggedIn]},
   {path:'feed',component:FeedComponent},
+  {path:'post/:postId',component:DetailsComponent},
   {path:'**',component:NotFoundComponent},
 ];
 
