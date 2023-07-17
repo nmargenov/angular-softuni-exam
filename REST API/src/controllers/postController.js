@@ -1,5 +1,5 @@
 const { postWithImage } = require('../managers/pictureManager');
-const { createPost } = require('../managers/postManager');
+const { createPost, getAllPosts } = require('../managers/postManager');
 const { mustBeAuth } = require('../middlewares/authMiddlewares');
 const { formatErrorMessage } = require('../utils/errorHandler');
 
@@ -7,8 +7,29 @@ const router = require('express').Router();
 
 const paths = {
     posts: '/',
+    followingPost:'/following'
 }
 
+router.get(paths.posts, async (req, res) => {
+    try {
+        const posts = await getAllPosts();
+        res.status(200).json(posts);
+    } catch (err) {
+        const error = formatErrorMessage(err);
+        res.status(404).send({ message: error });
+    }
+});
+
+router.get(paths.followingPost,mustBeAuth,async(req,res)=>{
+    try {
+        const loggedInUser = req.user?._id;
+        const posts = await getAllPosts(loggedInUser);
+        res.status(200).json(posts);
+    } catch (err) {
+        const error = formatErrorMessage(err);
+        res.status(404).send({ message: error });
+    }
+});
 
 router.post(paths.posts, mustBeAuth, async (req, res) => {
     try {
@@ -24,5 +45,6 @@ router.post(paths.posts, mustBeAuth, async (req, res) => {
         res.status(404).send({ message: error });
     }
 });
+
 
 module.exports = router;

@@ -1,0 +1,4 @@
+<div class="chooseFeed">
+    <a [ngClass]="{'isActive': feed == 'explore'}" (click)="changeState('explore')">explore</a>
+    <a *ngIf="isLoggedIn" [ngClass]="{'isActive':feed=='following'}" (click)="changeState('following')">following</a>
+</div>

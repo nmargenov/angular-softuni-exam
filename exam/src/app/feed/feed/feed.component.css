@@ -1,10 +1,30 @@
-main{
-    display: flex;
-    justify-content: center;
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-app-create-post{
-    display: flex;
-    width: 100%;
-    max-width: fit-content;
+.error{
+  display: flex;
+  justify-content: center;
+  margin:0 20px;
+  text-align: center;
+}
+
+app-state {
+  display: flex;
+  width: 100%;
+  max-width: 740px;
+}
+
+app-create-post {
+  display: flex;
+  width: 100%;
+  max-width: fit-content;
+}
+
+app-list-posts{
+width: 100%;
+max-width: 740px;
 }
