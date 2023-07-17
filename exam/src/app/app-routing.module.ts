@@ -10,6 +10,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { ProfileComponent } from './profile/profile/profile.component';
 import { SettingsComponent } from './settings/settings/settings.component';
+import { FeedComponent } from './feed/feed/feed.component';
 
 const routes: Routes = [
   {path:'login',component:LoginComponent,canActivate:[mustBeLoggedOut]},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path:'logout',component:LogoutComponent,canActivate:[mustBeLoggedIn]},
   {path:'user/:username',component:ProfileComponent},
   {path:'account/settings',component:SettingsComponent,canActivate:[mustBeLoggedIn]},
+  {path:'feed',component:FeedComponent},
   {path:'**',component:NotFoundComponent},
 ];
 

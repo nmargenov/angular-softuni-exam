@@ -10,6 +10,7 @@ import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { SettingsModule } from './settings/settings.module';
+import { FeedModule } from './feed/feed.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SettingsModule } from './settings/settings.module';
     CoreModule,
     AuthModule,
     ProfileModule,
-    SettingsModule
+    SettingsModule,
+    FeedModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS,

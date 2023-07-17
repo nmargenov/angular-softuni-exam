@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="errorDiv" *ngIf="errorMsg">
+        <span class="errorMsg">{{errorMsg}}</span>
+    </div>
+    <div class="post-content">
+        <textarea name="description" [disabled]="isLoading" (keyup.enter)="onPost()" [(ngModel)]="description" placeholder="What's happening?"></textarea>
+    </div>
+    <div class="image-div" *ngIf="previewUrl">
+        <img [src]="previewUrl">
+        <button *ngIf="!isLoading" class="clear-btn" (click)="onFileClear()">Clear image</button>
+    </div>
+    <div class="post-actions" *ngIf="!isLoading">
+            <input type="file" #fileInput (change)="onFileSelect($event)">
+            <button class="upload-btn" for="file-input" (click)="fileInput.click()">{{previewUrl?"Change Image" :"Upload Image"}}</button>
+            <button class="post-btn" (click)="onPost()">Post</button>
+    </div>
+    <div class="spinner" *ngIf="isLoading">
+        <app-spinner />
+    </div>
+</div>
