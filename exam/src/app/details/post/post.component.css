@@ -133,6 +133,11 @@ i:hover{
   color: black;
 }
 
+.spinner{
+  display: flex;
+  justify-content: center;
+}
+
 @media (max-width: 768px) {
   .header {
     flex-direction: column;

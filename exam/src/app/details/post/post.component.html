@@ -22,7 +22,7 @@
                 <p>Edited</p>
                 <i class="material-icons">edit</i>
             </div>
-            <div *ngIf="ensureLoggedInAndOwner()" class="actions">
+            <div *ngIf="ensureLoggedInAndOwner() && !isDeleting" class="actions">
                 <ng-container *ngIf="!deletePost">
                     <i class="material-icons">edit</i>
                 </ng-container>
@@ -33,15 +33,20 @@
                 </ng-container>
             </div>
         </div>
+        <div *ngIf="isDeleting" class="spinner">
+            <app-spinner />
+        </div>
         <div class="content">
-            <p>{{post.description}}</p>
-            <div *ngIf="post.image" class="post-image">
+            <ng-container *ngIf="!isDeleting">
+                <p>{{post.description}}</p>
+                    <div *ngIf="post.image" class="post-image">
                 <app-spinner *ngIf="isLoadingImage" />
                 <img [class.is-loading]="isLoadingImage" class="post-image" (error)="onImageLoad()"
-                    (load)="onImageLoad()" [src]="decodeBuffer(post.image.data)">
+                (load)="onImageLoad()" [src]="decodeBuffer(post.image.data)">
             </div>
+        </ng-container>
         </div>
-        <div class="footer">
+        <div *ngIf="!isDeleting" class="footer">
             <div *ngIf="isLoggedIn" class="like">
                 <i *ngIf="!isLiking" [class.isLiked]="isLiked" (click)="onLike()"
                     class="material-icons main">favorite</i>
