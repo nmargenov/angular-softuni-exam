@@ -44,6 +44,34 @@ export class PostComponent {
     );
   }
 
+  isDeleting = false;
+  deletePost= false;
+  onDelete(){
+    this.deletePost=true;
+  }
+  onDeleteCancel(){
+    this.deletePost=false;
+  }
+  onDeleteAccept(){
+    if (!this.ensureLoggedInAndOwner()) {
+      this.deletePost = false;
+      return;
+    }
+    this.isDeleting=true;
+    const postId = this.route.snapshot.paramMap.get('postId');
+    this.postService.deletePost(postId!).subscribe(
+      (data)=>{
+        this.isDeleting=false;
+        this.deletePost=false;
+        this.router.navigate(['/feed']);
+      },(err)=>{
+        this.isDeleting=false;
+        this.deletePost=false;
+      }
+    )
+    this.deletePost=false;
+  }
+
   get isLiked() {
     return this.post?.likedBy.includes(this.userService.decodedToken?._id!);
   }
@@ -72,6 +100,13 @@ export class PostComponent {
 
   timeAgo(date:string){
     return timeAgo(date);
+  }
+
+  ensureLoggedInAndOwner(): boolean {
+    return (
+      this.userService.isLoggedIn &&
+      this.userService.decodedToken?._id == this.post?.owner._id
+    );
   }
 
 }

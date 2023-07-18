@@ -122,8 +122,22 @@ i:hover{
   color: black !important;
 }
 
+.actions{
+  display: flex;
+  height: fit-content;
+  margin-left: auto;
+}
+
+.actions i{
+  height: fit-content;
+  color: black;
+}
+
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
+  }
+  .actions{
+    margin-left: 0;
   }
 }

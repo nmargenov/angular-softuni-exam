@@ -1,6 +1,8 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 
+const fs = require('fs');
+
 exports.getAllPosts = async (userId) => {
     const posts = await Post.find().sort({ createdAt: -1 }).populate({
         path: 'owner',
@@ -55,6 +57,22 @@ exports.likePost = async (postId, userId) => {
             .populate({ path: 'owner', select: '-password' })
             .populate({ path: 'comments', populate: { path: 'owner', select: '-password' } });
     }
+};
+
+exports.deletePostById = async (postId, loggedInUser) => {
+    const post = await Post.findById(postId);
+
+    if (post.owner._id.toString() != loggedInUser) {
+        throw new Error('Unautorized');
+    }
+
+    if(post.image.data){
+        console.log(post.image);
+        const path = post.image.data.toString().replace(/\\/g, '/');
+        fs.unlinkSync(path);
+    }
+
+    return Post.findByIdAndDelete(postId);
 };
 
 function checkIfLiked(post, userId) {

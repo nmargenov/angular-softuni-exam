@@ -20,7 +20,7 @@ export class PostService {
     posts:'/posts',
     followingPosts:'/posts/following',
     post:'/posts/:postId',
-    like:'/posts/like/:postId'
+    like:'/posts/like/:postId',
   }
 
   createPost(formData: FormData): Observable<IPost> {
@@ -60,4 +60,10 @@ export class PostService {
         catchError(errorHandler)
       );
   }
+
+  deletePost(postId:string):Observable<IPost>{
+    const url = environment.REST_API+ this.paths.post.replace(':postId',postId);
+    return this.http.delete<IPost>(url).pipe(catchError(errorHandler));
+  }
+
 }

@@ -22,6 +22,16 @@
                 <p>Edited</p>
                 <i class="material-icons">edit</i>
             </div>
+            <div *ngIf="ensureLoggedInAndOwner()" class="actions">
+                <ng-container *ngIf="!deletePost">
+                    <i class="material-icons">edit</i>
+                </ng-container>
+                <ng-container>
+                    <i *ngIf="!deletePost" (click)="onDelete()" class="material-icons">delete</i>
+                    <i *ngIf="deletePost" (click)="onDeleteCancel()" class="material-icons">cancel</i>
+                    <i *ngIf="deletePost" (click)="onDeleteAccept()" class="material-icons">done</i>
+                </ng-container>
+            </div>
         </div>
         <div class="content">
             <p>{{post.description}}</p>
@@ -45,4 +55,5 @@
             </div>
         </div>
     </div>
+    
 </div>

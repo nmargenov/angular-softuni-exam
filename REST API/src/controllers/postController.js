@@ -1,5 +1,5 @@
 const { postWithImage } = require('../managers/pictureManager');
-const { createPost, getAllPosts, getPostById, likePost } = require('../managers/postManager');
+const { createPost, getAllPosts, getPostById, likePost, deletePostById } = require('../managers/postManager');
 const { mustBeAuth } = require('../middlewares/authMiddlewares');
 const { formatErrorMessage } = require('../utils/errorHandler');
 
@@ -67,10 +67,21 @@ router.post(paths.like, mustBeAuth, async (req, res) => {
         const post = await likePost(postId, userId);
         res.status(200).json(post);
     } catch (err) {
-        res.status(404).send({ message: err.message });
-    }
+        const error = formatErrorMessage(err);
+        res.status(404).send({ message: error });    }
 });
 
+router.delete(paths.post,mustBeAuth,async(req,res)=>{
+    try{
+        const postId = req.params.postId;
+        const loggedInUser= req.user._id;
+        const post = await deletePostById(postId,loggedInUser);
+        res.status(200).json(post);
+    }catch(err){
+        const error = formatErrorMessage(err);
+        res.status(404).send({ message: error });
+    }
+});
 
 
 module.exports = router;
