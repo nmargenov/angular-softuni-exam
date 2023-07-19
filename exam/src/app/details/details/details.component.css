@@ -16,6 +16,14 @@ app-add-comment{
     max-width: 740px;
 }
 
+app-list-comments{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 740px;
+    margin-bottom: 30px;
+}
+
 app-not-found{
     width: 100%;
 }

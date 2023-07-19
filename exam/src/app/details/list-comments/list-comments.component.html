@@ -1,0 +1,32 @@
+<ng-container *ngIf="post">
+    <div *ngFor="let comment of post!.comments" class="container">
+            <div class="image-div">
+                <img class="image" [src]="decode(comment?.owner?.profilePicture?.data!)"
+                    (click)="navigateToUserProfile(comment!.owner.username)">
+            </div>
+            <div class="main">
+                <div class="author-div">
+                    <div (click)="navigateToUserProfile(comment!.owner.username)" class="author-name">
+                        <p>{{comment.owner.firstName}} {{comment.owner.lastName}}</p>
+                    </div>
+                    <div (click)="navigateToUserProfile(comment!.owner.username)" class="author-username">
+                        <p>@{{comment.owner.username}}</p>
+                    </div>
+                    <div class="publish-time">
+                        <p>{{timeAgo(comment.createdAt)}}</p>
+                    </div>
+                    <div *ngIf="checkIfEdited(comment.createdAt,comment.lastEditedAt)" class="edited">
+                        <p>Edited</p>
+                        <i class="material-icons">edit</i>
+                    </div>
+                    <div *ngIf="isOwner(comment._id)" class="actions">
+                        <i class="material-icons">edit</i>
+                        <i class="material-icons">delete</i>
+                    </div>
+                </div>
+                <div class="comment">
+                    <p>{{comment.comment}}</p>
+                </div>
+            </div>
+    </div>
+</ng-container>

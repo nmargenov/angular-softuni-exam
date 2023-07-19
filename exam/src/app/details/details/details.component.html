@@ -5,4 +5,5 @@
     </ng-container>
     <app-not-found *ngIf="!isLoading && hasError"/>
     <app-add-comment/>
+    <app-list-comments [post]="post"/>
 </main>
