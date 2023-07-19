@@ -25,9 +25,11 @@
   margin: 10px 15px;
   margin-left: 5px;
   width: 100%;
+  max-width: 600px;
 }
 
 .header {
+  align-items: center;
   display: flex;
   margin-bottom: 5px;
 }
@@ -48,6 +50,9 @@
 }
 
 .content {
+  display: flex;
+  max-width: 100%;
+  flex-direction: column;
   margin-bottom: 5px;
 }
 
@@ -106,7 +111,7 @@
   color: red !important;
 }
 
-i{
+.footer i{
   margin:0 !important;
   color:white;
 }
@@ -138,8 +143,10 @@ i:hover{
   justify-content: center;
 }
 
+
 @media (max-width: 768px) {
   .header {
+    align-items: baseline;
     flex-direction: column;
   }
   .actions{

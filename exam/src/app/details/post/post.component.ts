@@ -14,6 +14,10 @@ import { isEdited, timeAgo } from 'src/app/utils/postHelper';
 export class PostComponent {
   @Input() post!: IPost | null;
 
+  onEditChange(edit:boolean){
+    this.editPost=edit;
+  }
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -43,6 +47,19 @@ export class PostComponent {
       }
     );
   }
+
+  isEditing = false;
+  editPost=false;
+  onEdit(){
+    this.editPost=true;
+  }
+  onEditCancel(){
+    this.editPost=false;
+  }
+  onEditAccept(){
+    this.editPost=false;
+  }
+
 
   isDeleting = false;
   deletePost= false;

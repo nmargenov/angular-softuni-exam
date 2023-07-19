@@ -51,6 +51,6 @@ exports.postWithImage = async (req, res) => {
     if (req.file) {
         return { image: req.file.path, description: req.body.description, owner: req.body.owner };
     } else {
-        return { description: req.body.description, owner: req.body.owner, deleteImage:req.body.deleteImage };
+        return { description: req.body.description, owner: req.body.owner };
     }
 };

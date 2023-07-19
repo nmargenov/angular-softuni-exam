@@ -24,9 +24,9 @@
             </div>
             <div *ngIf="ensureLoggedInAndOwner() && !isDeleting" class="actions">
                 <ng-container *ngIf="!deletePost">
-                    <i class="material-icons">edit</i>
+                    <i *ngIf="!editPost" (click)="onEdit()" class="material-icons">edit</i>
                 </ng-container>
-                <ng-container>
+                <ng-container *ngIf="!editPost">
                     <i *ngIf="!deletePost" (click)="onDelete()" class="material-icons">delete</i>
                     <i *ngIf="deletePost" (click)="onDeleteCancel()" class="material-icons">cancel</i>
                     <i *ngIf="deletePost" (click)="onDeleteAccept()" class="material-icons">done</i>
@@ -36,17 +36,18 @@
         <div *ngIf="isDeleting" class="spinner">
             <app-spinner />
         </div>
-        <div class="content">
-            <ng-container *ngIf="!isDeleting">
-                <p>{{post.description}}</p>
-                    <div *ngIf="post.image" class="post-image">
-                <app-spinner *ngIf="isLoadingImage" />
-                <img [class.is-loading]="isLoadingImage" class="post-image" (error)="onImageLoad()"
-                (load)="onImageLoad()" [src]="decodeBuffer(post.image.data)">
-            </div>
-        </ng-container>
+        <div *ngIf="editPost" class="edit-div">
+            <app-edit-post (isEdited)="onEditChange($event)" [post]="post"/>
         </div>
-        <div *ngIf="!isDeleting" class="footer">
+        <div *ngIf="!isDeleting && !editPost" class="content">
+                <p class="description">{{post.description}}</p>
+                <div *ngIf="post.image" class="post-image">
+                    <app-spinner *ngIf="isLoadingImage" />
+                    <img [class.is-loading]="isLoadingImage" class="post-image" (error)="onImageLoad()"
+                        (load)="onImageLoad()" [src]="decodeBuffer(post.image.data)">
+                </div>
+        </div>
+        <div *ngIf="!isDeleting && !editPost" class="footer">
             <div *ngIf="isLoggedIn" class="like">
                 <i *ngIf="!isLiking" [class.isLiked]="isLiked" (click)="onLike()"
                     class="material-icons main">favorite</i>
@@ -60,5 +61,5 @@
             </div>
         </div>
     </div>
-    
+
 </div>
