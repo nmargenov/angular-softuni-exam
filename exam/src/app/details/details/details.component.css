@@ -1,9 +1,17 @@
 main{
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 app-post{
+    width: 100%;
+    max-width: 740px;
+}
+
+app-add-comment{
+    display: flex;
     width: 100%;
     max-width: 740px;
 }

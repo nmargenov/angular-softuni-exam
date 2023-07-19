@@ -26,7 +26,7 @@ const postSchema = new mongoose.Schema({
         },
         comment: {
             type: String,
-            minLength: [3, 'Comment must at least 3 characters long!']
+            minLength: [2, 'Comment must at least 2 characters long!']
         }
     }],
     likedBy: [{

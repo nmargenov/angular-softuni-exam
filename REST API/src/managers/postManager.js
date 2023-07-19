@@ -125,6 +125,12 @@ exports.deleteExistingImage = async (postId, loggedInUser) => {
         .populate({ path: 'comments', populate: { path: 'owner', select: '-password' } });;
 }
 
+exports.writeComment = (postId, userId, comment) => {
+    return Post.findByIdAndUpdate(postId, { $push: { comments: { owner: userId, comment } } }, { runValidators: true, new: true })
+        .populate({ path: 'owner', select: '-password' })
+        .populate({ path: 'comments', populate: { path: 'owner', select: '-password' } });
+}
+
 function checkIfLiked(post, userId) {
     return post.likedBy.map(p => p.toString()).includes(userId);
 };

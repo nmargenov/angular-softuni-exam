@@ -5,6 +5,7 @@ import { PostComponent } from './post/post.component';
 import { SharedModule } from '../shared/shared.module';
 import { EditPostComponent } from './edit-post/edit-post.component';
 import { FormsModule } from '@angular/forms';
+import { AddCommentComponent } from './add-comment/add-comment.component';
 
 
 
@@ -12,7 +13,8 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     DetailsComponent,
     PostComponent,
-    EditPostComponent
+    EditPostComponent,
+    AddCommentComponent
   ],
   imports: [
     CommonModule,

@@ -19,7 +19,8 @@ export class PostService {
     followingPosts: '/posts/following',
     post: '/posts/:postId',
     like: '/posts/like/:postId',
-    deleteExistingImage: '/posts/deleteImage/:postId'
+    deleteExistingImage: '/posts/deleteImage/:postId',
+    comment: '/posts/comment/:postId',
   };
 
   createPost(formData: FormData): Observable<IPost> {
@@ -79,15 +80,36 @@ export class PostService {
     );
   }
 
-  deleteExistingImage(postId:string):Observable<IPost>{
+  deleteExistingImage(postId: string): Observable<IPost> {
     const url =
-      environment.REST_API + this.paths.deleteExistingImage.replace(':postId', postId);
-      return this.http.delete<IPost>(url).pipe(
-        tap((updatedPost:IPost)=>{
+      environment.REST_API +
+      this.paths.deleteExistingImage.replace(':postId', postId);
+    return this.http.delete<IPost>(url).pipe(
+      tap((updatedPost: IPost) => {
+        this.postUpdated.emit(updatedPost);
+      }),
+      catchError(errorHandler)
+    );
+  }
+
+  writeComment(
+    postId: string,
+    userId: string,
+    comment: string
+  ): Observable<IPost> {
+    const url =
+    environment.REST_API +
+    this.paths.comment.replace(':postId', postId);
+    return this.http
+      .post<IPost>(url, {
+        userId,
+        comment,
+      })
+      .pipe(
+        tap((updatedPost: IPost) => {
           this.postUpdated.emit(updatedPost);
         }),
         catchError(errorHandler)
       );
   }
-
 }
