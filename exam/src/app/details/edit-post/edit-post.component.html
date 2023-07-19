@@ -1,4 +1,7 @@
 <div class="container">
+    <div *ngIf="errorMsg" class="error-div">
+        <p class="errorMsg">{{errorMsg}}</p>
+    </div>
     <div class="textarea-div">
         <textarea name="description" [disabled]="isEditing" [(ngModel)]="description" placeholder="What's happening"></textarea>
     </div>
@@ -15,7 +18,7 @@
         <button *ngIf="!isEditing" (click)="onFileClear()" class="clear-btn">Remove selected photo</button>
     </div>
     <div *ngIf="!isEditing" class="actions">
-        <input type="file" #fileInput (change)="onFileSelect($event)">
+        <input type="file" accept="image/*" #fileInput (change)="onFileSelect($event)">
         <button class="upload-btn" (click)="fileInput.click()">Upload photo</button>
         <div class="save-cancel-btn">
             <button (click)="onCancel()" class="clear-btn cancel-btn">Cancel</button>

@@ -101,6 +101,16 @@ input[type="file"]{
   margin-right: 5px;
 }
 
+.error-div{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.errorMsg{
+  color:red;
+}
+
 @media (max-width: 768px) {
   .actions {
     flex-direction: column;
