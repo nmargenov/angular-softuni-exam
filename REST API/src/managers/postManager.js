@@ -22,8 +22,8 @@ exports.createPost = (description, owner, image) => {
     const post = {
         description,
         owner,
-        createdAt:date,
-        lastEditedAt:date
+        createdAt: date,
+        lastEditedAt: date
     };
     if (image) {
         post.image = {
@@ -127,6 +127,19 @@ exports.deleteExistingImage = async (postId, loggedInUser) => {
 
 exports.writeComment = (postId, userId, comment) => {
     return Post.findByIdAndUpdate(postId, { $push: { comments: { owner: userId, comment } } }, { runValidators: true, new: true })
+        .populate({ path: 'owner', select: '-password' })
+        .populate({ path: 'comments', populate: { path: 'owner', select: '-password' } });
+}
+
+exports.deleteComment = async (postId, commentId, loggedInUser) => {
+    const post = await Post.findById(postId).populate({ path: 'comments', populate: { path: 'owner' } });
+    const filteredPost = post.comments.filter(p => p._id.toString() == commentId);
+
+    if (!filteredPost || filteredPost[0].owner._id.toString() != loggedInUser) {
+        throw new Error("Unautorized!");
+    }
+
+    return Post.findByIdAndUpdate(postId, { $pull: { comments: { _id: commentId } } }, { runValidators: true, new: true })
         .populate({ path: 'owner', select: '-password' })
         .populate({ path: 'comments', populate: { path: 'owner', select: '-password' } });
 }

@@ -60,6 +60,11 @@ i:hover{
     cursor: pointer;
 }
 
+.loader{
+  display: flex;
+  justify-content: center;
+}
+
 
 @media (max-width: 768px) {
   .author-div {

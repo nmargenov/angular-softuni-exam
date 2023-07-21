@@ -19,13 +19,20 @@
                         <p>Edited</p>
                         <i class="material-icons">edit</i>
                     </div>
-                    <div *ngIf="isOwner(comment._id)" class="actions">
-                        <i class="material-icons">edit</i>
-                        <i class="material-icons">delete</i>
+                    <div *ngIf="isOwner(comment._id) && !isDeleting[comment._id]" class="actions">
+                        <i *ngIf="!deleteState[comment._id]" class="material-icons">edit</i>
+                        <i *ngIf="!deleteState[comment._id]" (click)="onDelete(comment._id)" class="material-icons">delete</i>
+                        <ng-container *ngIf="deleteState[comment._id]">
+                            <i (click)="onDeleteCancel(comment._id)" class="material-icons">cancel</i>
+                            <i (click)="onDeleteAccept(comment._id)" class="material-icons">done</i>
+                        </ng-container>
                     </div>
                 </div>
-                <div class="comment">
+                <div class="comment" *ngIf="!isDeleting[comment._id]">
                     <p>{{comment.comment}}</p>
+                </div>
+                <div *ngIf="isDeleting[comment._id]" class="loader">
+                    <app-spinner/>
                 </div>
             </div>
     </div>

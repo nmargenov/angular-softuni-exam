@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
@@ -31,7 +31,8 @@ export class ListCommentsComponent {
   constructor(
     private postService: PostService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private route:ActivatedRoute
   ) {
     this.postSubscription = this.postService.postUpdated.subscribe(
       (updatedPost) => {
@@ -40,6 +41,26 @@ export class ListCommentsComponent {
         )!;
       }
     );
+  }
+
+  isDeleting:{[commentId:string]:boolean} ={};
+  deleteState:{[commentId:string]:boolean} ={};
+  onDelete(commentId:string){
+    this.deleteState[commentId] = true;
+  }
+  onDeleteCancel(commentId:string){
+    this.deleteState[commentId] = false;
+  }
+  onDeleteAccept(commentId:string){
+    this.isDeleting[commentId]=true;
+    const postId = this.route.snapshot.paramMap.get('postId');
+    this.postService.deleteComment(postId!,commentId).subscribe(
+      (data)=>{
+    this.isDeleting[commentId]=false;
+      },(err)=>{
+    this.isDeleting[commentId]=false;
+      }
+    )
   }
 
   // filter the comments so i can put the edit and delete comment only on these
