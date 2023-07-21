@@ -4,6 +4,6 @@
         <app-post [post]="post"/>
     </ng-container>
     <app-not-found *ngIf="!isLoading && hasError"/>
-    <app-add-comment/>
+    <app-add-comment *ngIf="isLoggedIn"/>
     <app-list-comments [post]="post"/>
 </main>

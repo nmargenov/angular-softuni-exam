@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PostService } from 'src/app/services/post.service';
+import { UserService } from 'src/app/services/user.service';
 import { IPost } from 'src/app/types/IPost';
 
 @Component({
@@ -10,6 +11,7 @@ import { IPost } from 'src/app/types/IPost';
 })
 export class DetailsComponent implements OnInit {
   constructor(
+    private userService:UserService,
     private postService: PostService,
     private route: ActivatedRoute
   ) {}
@@ -17,6 +19,10 @@ export class DetailsComponent implements OnInit {
   post: IPost | null = null;
   isLoading = false;
   hasError = false;
+
+  get isLoggedIn(){
+    return this.userService.isLoggedIn;
+  }
 
   ngOnInit() {
     this.isLoading = true;
