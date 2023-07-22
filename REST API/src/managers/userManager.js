@@ -98,17 +98,20 @@ exports.follow = async (userToFollow, userId) => {
     let result;
     if (!isFollowing) {
         result = await Promise.all([
-            User.findByIdAndUpdate(userToFollowId, { $push: { followers: userId } }, { new: true }).select('-password'),
+            User.findByIdAndUpdate(userToFollowId, { $push: { followers: userId } }, { new: true }).select('-password').populate('userPosts'),
             User.findByIdAndUpdate(userId, { $push: { following: userToFollowId } }, { new: true }).select('-password')
         ]);
     }
     if (isFollowing) {
         result = await Promise.all([
-            User.findByIdAndUpdate(userToFollowId, { $pull: { followers: userId } }, { new: true }).select('-password'),
+            User.findByIdAndUpdate(userToFollowId, { $pull: { followers: userId } }, { new: true }).select('-password').populate('userPosts'),
             User.findByIdAndUpdate(userId, { $pull: { following: userToFollowId } }, { new: true }).select('-password')
         ]);
     }
-    return result[0];
+    const userObject = result[0].toObject();
+    userObject.userPosts = result[0].userPosts;
+    userObject.profilePicture = result[0].profilePicture;
+    return userObject;
 };
 
 exports.editPublicProfileData = async (req, res, userId) => {
