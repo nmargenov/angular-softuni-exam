@@ -127,4 +127,17 @@ export class PostService {
         catchError(errorHandler)
       );
   }
+
+  editComment(postId:string,commentId:string,comment:string):Observable<IPost>{
+    const url =
+    environment.REST_API +
+    this.paths.commentWithId.replace(':postId', postId).replace(':commentId',commentId);
+    return this.http.patch<IPost>(url,{comment})
+      .pipe(
+        tap((updatedPost:IPost)=>{
+          this.postUpdated.emit(updatedPost);
+        }),
+        catchError(errorHandler)
+      );
+  }
 }

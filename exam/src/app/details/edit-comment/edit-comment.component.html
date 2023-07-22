@@ -1,0 +1,15 @@
+<div class="container">
+    <div *ngIf="errorMsg" class="error-div">
+        <p class="errorMsg">{{errorMsg}}</p>
+    </div>
+    <div class="textarea-div">
+        <textarea name="description" [(ngModel)]="description" placeholder="What's happening"></textarea>
+    </div>
+    <div *ngIf="!isEditing[comment._id]" class="actions">
+        <button (click)="onCancel(comment._id)" class="cancel-btn">Cancel</button>
+        <button (click)="onSave(comment._id)" class="save-btn">Save</button>
+    </div>
+    <div class="spinner" *ngIf="isEditing[comment._id]">
+        <app-spinner/>
+    </div>
+</div>

@@ -14,15 +14,9 @@ import { timeAgo, isEdited } from 'src/app/utils/postHelper';
 })
 export class ListCommentsComponent {
   private postSubscription: Subscription;
-
-  hideContent: { [commentId: string]: boolean } = {};
-  onEditClicked(commentId: string) {
-    this.hideContent[commentId] = !this.hideContent[commentId];
-  }
   
-  onCommentChange(commentId: string, event: Event) {
-    const target = event.target as HTMLTextAreaElement;
-    this.changedComment[commentId] = target.value;
+  onCommentChange(commentId: string) {
+    this.editState[commentId]=false;   
   }
   
   changedComment: { [commentId: string]: string } = {};
@@ -41,6 +35,11 @@ export class ListCommentsComponent {
         )!;
       }
     );
+  }
+
+  editState:{[commentId:string]:boolean}={};
+  onEdit(commentId:string){
+    this.editState[commentId]=true;
   }
 
   isDeleting:{[commentId:string]:boolean} ={};

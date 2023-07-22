@@ -65,6 +65,21 @@ i:hover{
   justify-content: center;
 }
 
+.edited {
+  display: flex;
+  margin-top: 1px;
+}
+
+.edited p {
+  color: #5b7083;
+  font-size: 15px;
+}
+
+.edited i {
+  font-size: 16px;
+  padding-bottom: 3px;
+  cursor:default !important
+}
 
 @media (max-width: 768px) {
   .author-div {

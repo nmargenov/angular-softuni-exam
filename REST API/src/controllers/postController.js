@@ -1,5 +1,5 @@
 const { postWithImage } = require('../managers/pictureManager');
-const { createPost, getAllPosts, getPostById, likePost, deletePostById, editPost, deleteExistingImage, writeComment, deleteComment } = require('../managers/postManager');
+const { createPost, getAllPosts, getPostById, likePost, deletePostById, editPost, deleteExistingImage, writeComment, deleteComment, editComment } = require('../managers/postManager');
 const { mustBeAuth } = require('../middlewares/authMiddlewares');
 const { formatErrorMessage } = require('../utils/errorHandler');
 
@@ -11,8 +11,8 @@ const paths = {
     followingPost: '/following',
     like: '/like/:postId',
     deleteExistingImage: '/deleteImage/:postId',
-    comment:'/comment/:postId',
-    commentWithId:'/comment/:postId/:commentId',
+    comment: '/comment/:postId',
+    commentWithId: '/comment/:postId/:commentId',
 }
 
 router.get(paths.posts, async (req, res) => {
@@ -132,6 +132,21 @@ router.delete(paths.commentWithId, mustBeAuth, async (req, res) => {
         const commentId = req.params.commentId;
         const loggedInUser = req.user._id;
         const post = await deleteComment(postId, commentId, loggedInUser);
+        res.status(200).json(post);
+    } catch (err) {
+        const error = formatErrorMessage(err);
+        res.status(404).send({ message: error });
+    }
+});
+
+
+router.patch(paths.commentWithId, mustBeAuth, async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        const commentId = req.params.commentId;
+        const loggedInUser = req.user._id;
+        const comment = req.body.comment;
+        const post = await editComment(postId, commentId, comment, loggedInUser);
         res.status(200).json(post);
     } catch (err) {
         const error = formatErrorMessage(err);

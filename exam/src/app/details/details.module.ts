@@ -7,6 +7,7 @@ import { EditPostComponent } from './edit-post/edit-post.component';
 import { FormsModule } from '@angular/forms';
 import { AddCommentComponent } from './add-comment/add-comment.component';
 import { ListCommentsComponent } from './list-comments/list-comments.component';
+import { EditCommentComponent } from './edit-comment/edit-comment.component';
 
 
 
@@ -16,7 +17,8 @@ import { ListCommentsComponent } from './list-comments/list-comments.component';
     PostComponent,
     EditPostComponent,
     AddCommentComponent,
-    ListCommentsComponent
+    ListCommentsComponent,
+    EditCommentComponent
   ],
   imports: [
     CommonModule,
