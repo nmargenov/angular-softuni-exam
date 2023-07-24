@@ -1,5 +1,5 @@
 const { postWithImage } = require('../managers/pictureManager');
-const { createPost, getAllPosts, getPostById, likePost, deletePostById, editPost, deleteExistingImage, writeComment, deleteComment, editComment } = require('../managers/postManager');
+const { createPost, getAllPosts, getPostById, likePost, deletePostById, editPost, deleteExistingImage, writeComment, deleteComment, editComment, getLikedPostsByUser } = require('../managers/postManager');
 const { mustBeAuth } = require('../middlewares/authMiddlewares');
 const { formatErrorMessage } = require('../utils/errorHandler');
 
@@ -13,6 +13,7 @@ const paths = {
     deleteExistingImage: '/deleteImage/:postId',
     comment: '/comment/:postId',
     commentWithId: '/comment/:postId/:commentId',
+    likedPosts: '/liked/:userId'
 }
 
 router.get(paths.posts, async (req, res) => {
@@ -149,6 +150,22 @@ router.patch(paths.commentWithId, mustBeAuth, async (req, res) => {
         const post = await editComment(postId, commentId, comment, loggedInUser);
         res.status(200).json(post);
     } catch (err) {
+        const error = formatErrorMessage(err);
+        res.status(404).send({ message: error });
+    }
+});
+
+router.get(paths.likedPosts, mustBeAuth, async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const loggedInUser = req.user._id;
+        if(userId != loggedInUser){
+            throw new Error("Unautorized!");
+        }
+        const posts = await getLikedPostsByUser(userId);
+        res.status(200).json(posts);
+    } catch (err) {
+        console.log(err);
         const error = formatErrorMessage(err);
         res.status(404).send({ message: error });
     }

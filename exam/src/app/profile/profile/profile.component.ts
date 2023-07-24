@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
+import { IPost } from 'src/app/types/IPost';
 import { IUser } from 'src/app/types/IUser';
 import { decodeBuffer } from 'src/app/utils/imageHelpers';
 
@@ -12,14 +14,57 @@ import { decodeBuffer } from 'src/app/utils/imageHelpers';
 export class ProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
+    private postService: PostService,
     private route: ActivatedRoute
   ) {}
+
+  feed = 'myPosts';
+
+  getFeed(feed:string){
+    this.feed=feed;
+    this.fetchPosts(feed);
+  }
+
+  get ensureLoggedInAndOwner(){
+    return this.userService.isLoggedIn && this.user._id === this.userService.decodedToken?._id;
+  }
 
   hasError = false;
   user!: IUser;
   isLoading = false;
   isOwner = false;
   isFollowing = false;
+  posts:IPost[] | null = null;
+
+  fetchPosts(feed:string){
+    if(feed==='myPosts'){
+      this.fetchUserPosts();
+    }else if(feed ==='liked'){
+      this.fetchLiked()
+    }
+  }
+
+  isLikedFetching=false;
+
+  fetchLiked(){
+    this.isLikedFetching=true;
+    const userId = this.userService.decodedToken?._id;
+    this.postService.getLikedPosts(userId!).subscribe(
+      (data)=>{
+        this.isLikedFetching=false;
+        this.posts=data;
+      },(err)=>{
+        this.isLikedFetching=false;
+        this.posts = [];
+      }
+    )
+  }
+
+  fetchUserPosts(){
+    this.posts=this.user.userPosts;
+  }
+
+  
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -33,6 +78,7 @@ export class ProfileComponent implements OnInit {
           this.isLoading = false;
           this.isOwner = isLoggedIn && data._id === loggedInUser?._id;
           this.user = data;
+          this.fetchUserPosts();
           if (!this.isOwner) {
             this.isFollowing = this.user?.followers.includes(userId!)!;
           }

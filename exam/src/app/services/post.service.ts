@@ -21,7 +21,8 @@ export class PostService {
     like: '/posts/like/:postId',
     deleteExistingImage: '/posts/deleteImage/:postId',
     comment: '/posts/comment/:postId',
-    commentWithId:'/posts/comment/:postId/:commentId'
+    commentWithId:'/posts/comment/:postId/:commentId',
+    likedPosts:'/posts/liked/:userId',
   };
 
   createPost(formData: FormData): Observable<IPost> {
@@ -139,5 +140,10 @@ export class PostService {
         }),
         catchError(errorHandler)
       );
+  }
+
+  getLikedPosts(userId:string):Observable<IPost[]>{
+    const url = environment.REST_API+this.paths.likedPosts.replace(':userId',userId);
+    return this.http.get<IPost[]>(url).pipe(catchError(errorHandler));
   }
 }

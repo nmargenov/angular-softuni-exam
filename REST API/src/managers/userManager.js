@@ -79,7 +79,7 @@ exports.login = async (username, password) => {
 };
 
 exports.getUser = async (username) => {
-    const user = await User.findOne({ username }).select('-password').populate('userPosts');
+    const user = await User.findOne({ username }).select('-password').populate('userPosts').populate({path:'userPosts',populate:{path:'owner',select:'-password'}});
     const userObject = user.toObject();
     userObject.userPosts = user.userPosts;
     userObject.profilePicture = user.profilePicture;
@@ -98,13 +98,13 @@ exports.follow = async (userToFollow, userId) => {
     let result;
     if (!isFollowing) {
         result = await Promise.all([
-            User.findByIdAndUpdate(userToFollowId, { $push: { followers: userId } }, { new: true }).select('-password').populate('userPosts'),
+            User.findByIdAndUpdate(userToFollowId, { $push: { followers: userId } }, { new: true }).select('-password').populate('userPosts').populate({path:'userPosts',populate:{path:'owner',select:'-password'}}),
             User.findByIdAndUpdate(userId, { $push: { following: userToFollowId } }, { new: true }).select('-password')
         ]);
     }
     if (isFollowing) {
         result = await Promise.all([
-            User.findByIdAndUpdate(userToFollowId, { $pull: { followers: userId } }, { new: true }).select('-password').populate('userPosts'),
+            User.findByIdAndUpdate(userToFollowId, { $pull: { followers: userId } }, { new: true }).select('-password').populate('userPosts').populate({path:'userPosts',populate:{path:'owner',select:'-password'}}),
             User.findByIdAndUpdate(userId, { $pull: { following: userToFollowId } }, { new: true }).select('-password')
         ]);
     }

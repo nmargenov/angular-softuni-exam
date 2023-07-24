@@ -67,6 +67,9 @@ userSchema.virtual('userPosts', {
     ref: 'Post',
     localField: '_id',
     foreignField: 'owner',
+    options: {
+        sort: { createdAt: -1 }
+    }
   });
   
 

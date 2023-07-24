@@ -42,5 +42,8 @@
         </div>
       </div>
     </div>
+    <app-choose-feed *ngIf="ensureLoggedInAndOwner" (feedChange)="getFeed($event)"/>
+    <app-list-posts *ngIf="!isLikedFetching" [posts]="posts"/>
+    <app-spinner *ngIf="isLikedFetching"/>
   </ng-container>
 </main>

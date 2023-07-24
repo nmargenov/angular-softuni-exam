@@ -1,5 +1,6 @@
 main {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -99,6 +100,19 @@ h1 {
 
 .is-loading {
   display: none;
+}
+
+app-list-posts{
+  margin-top: 10px;
+  max-width: 740px;
+  width: 100%;
+}
+
+app-choose-feed{
+  display: flex;
+  margin-top: 10px;
+  max-width: 740px;
+  width: 100%;
 }
 
 @media (max-width: 768px) {

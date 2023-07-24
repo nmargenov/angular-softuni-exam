@@ -1,0 +1,4 @@
+<div class="chooseFeed">
+    <a [ngClass]="{'isActive': feed == 'myPosts'}" (click)="changeState('myPosts')">My posts</a>
+    <a [ngClass]="{'isActive':feed=='liked'}" (click)="changeState('liked')">Liked</a>
+</div>

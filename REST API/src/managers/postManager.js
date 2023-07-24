@@ -163,6 +163,15 @@ exports.editComment = async (postId, commentId, comment, loggedInUser) => {
     return populatedPost;
 }
 
+exports.getLikedPostsByUser = async(userId)=>{
+    const posts = await Post.find().sort({ createdAt: -1 }).populate({
+        path: 'owner',
+        select: '-password'
+    });
+
+    const filteredPosts = posts.filter(p=>p.likedBy.map(id=>id.toString()).includes(userId));
+    return filteredPosts;
+}
 
 function checkIfLiked(post, userId) {
     return post.likedBy.map(p => p.toString()).includes(userId);
