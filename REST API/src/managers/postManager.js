@@ -135,7 +135,7 @@ exports.deleteComment = async (postId, commentId, loggedInUser) => {
     const post = await Post.findById(postId).populate({ path: 'comments', populate: { path: 'owner' } });
     const filteredPost = post.comments.filter(p => p._id.toString() == commentId);
 
-    if (!filteredPost || filteredPost[0].owner._id.toString() != loggedInUser) {
+    if (filteredPost.length==0 || filteredPost[0].owner._id.toString() != loggedInUser) {
         throw new Error("Unautorized!");
     }
 
@@ -148,7 +148,7 @@ exports.editComment = async (postId, commentId, comment, loggedInUser) => {
     const post = await Post.findById(postId).populate({ path: 'comments', populate: { path: 'owner' } });
     const filteredPost = post.comments.filter(p => p._id.toString() == commentId);
 
-    if (!filteredPost || filteredPost[0].owner._id.toString() != loggedInUser) {
+    if (filteredPost.length==0  || filteredPost[0].owner._id.toString() != loggedInUser) {
         throw new Error("Unautorized!");
     }
     filteredPost[0].comment = comment.trim();

@@ -7,7 +7,7 @@ exports.formatErrorMessage=(err)=> {
             error='Unknown error!';
         }
         else{
-            error = Object.values(err.errors)[0];
+            error = Object.values(err.errors)[0].message;
         }
     } else {
         error = err.message;

@@ -47,7 +47,6 @@ export class EditPostComponent implements OnInit {
       (err) => {
         this.errorMsg=err;
         this.isEditing=false;
-        this.isEdited.emit(false);
       }
     );
   }
