@@ -3,7 +3,7 @@ const { MongooseError, default: mongoose } = require('mongoose');
 exports.formatErrorMessage=(err)=> {
     let error = "";
     if (err instanceof MongooseError) {
-        if(!err.errors){
+        if(!err.errors || err.errors.length==0){
             error='Unknown error!';
         }
         else{
