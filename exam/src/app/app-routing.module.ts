@@ -21,6 +21,7 @@ const routes: Routes = [
   {path:'account/settings',component:SettingsComponent,canActivate:[mustBeLoggedIn]},
   {path:'feed',component:FeedComponent},
   {path:'post/:postId',component:DetailsComponent},
+  {path:"",redirectTo:'/feed',pathMatch:"full"},
   {path:'**',component:NotFoundComponent},
 ];
 

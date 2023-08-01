@@ -7,7 +7,6 @@
         <i class="material-icons">{{ isMenuOpen ? "close" : "menu" }}</i>
       </li>
       <li class="menu" [class.is-open]="isMenuOpen">
-        <a routerLink="/" class="menu-item" (click)="toggleMenu()">Home</a>
         <a routerLink="/feed" class="menu-item" (click)="toggleMenu()">Feed</a>
         <ng-container *ngIf="!isLoggedIn">
           <a routerLink="/login" class="menu-item" (click)="toggleMenu()">Login</a>
