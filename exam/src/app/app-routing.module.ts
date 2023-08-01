@@ -14,15 +14,15 @@ import { FeedComponent } from './feed/feed/feed.component';
 import { DetailsComponent } from './details/details/details.component';
 
 const routes: Routes = [
-  {path:'login',component:LoginComponent,canActivate:[mustBeLoggedOut]},
-  {path:'register',component:RegisterComponent,canActivate:[mustBeLoggedOut]},
-  {path:'logout',component:LogoutComponent,canActivate:[mustBeLoggedIn]},
-  {path:'user/:username',component:ProfileComponent},
-  {path:'account/settings',component:SettingsComponent,canActivate:[mustBeLoggedIn]},
-  {path:'feed',component:FeedComponent},
-  {path:'post/:postId',component:DetailsComponent},
+  {path:'login',component:LoginComponent,canActivate:[mustBeLoggedOut],title:'Login'},
+  {path:'register',component:RegisterComponent,canActivate:[mustBeLoggedOut],title:'Register'},
+  {path:'logout',component:LogoutComponent,canActivate:[mustBeLoggedIn],title:"Logout"},
+  {path:'user/:username',component:ProfileComponent,title:"Profile"},
+  {path:'account/settings',component:SettingsComponent,canActivate:[mustBeLoggedIn],title:"Settings"},
+  {path:'feed',component:FeedComponent,title:"Feed"},
+  {path:'post/:postId',component:DetailsComponent,title:"Post"},
   {path:"",redirectTo:'/feed',pathMatch:"full"},
-  {path:'**',component:NotFoundComponent},
+  {path:'**',component:NotFoundComponent,title:"Not found"},
 ];
 
 
