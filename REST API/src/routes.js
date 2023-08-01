@@ -11,4 +11,9 @@ const paths = {
 router.use(paths.users,userController);
 router.use(paths.posts,postController);
 
+router.all('*',(req,res)=>{
+    res.status(404).json({message: "Path not found!"});
+});
+
+
 module.exports = router;
