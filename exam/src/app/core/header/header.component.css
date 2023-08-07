@@ -52,6 +52,10 @@ ul {
   transition: 0.5s;
 }
 
+img{
+  height: 70px;
+}
+
 @media (max-width: 768px) {
   .burger {
     display: block;
